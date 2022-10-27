@@ -718,7 +718,6 @@ with no args, if that value is non-nil."
   (require 'easymenu)
   (easy-menu-define rpm-spec-call-menu rpm-spec-mode-map
                     "Post menu for `rpm-spec-mode'." rpm-spec-mode-menu)
-  (easy-menu-add rpm-spec-mode-menu)
 
   (if (and (= (buffer-size) 0) rpm-spec-initialize-sections)
       (run-hooks 'rpm-spec-mode-new-file-hook))
