@@ -1106,12 +1106,7 @@ leave point at previous location."
 			   "\"")
 		   buildoptions)))))
 
-  (progn
-    (defun list->string (lst)
-      (if (cdr lst)
-	  (concat (car lst) " " (list->string (cdr lst)))
-	(car lst)))
-    (compilation-start (list->string (cons rpm-spec-build-command buildoptions)) 'rpmbuild-mode))
+  (compilation-start (mapconcat #'identity (cons rpm-spec-build-command buildoptions) " ") 'rpmbuild-mode)
 
   (if (and rpm-spec-sign-gpg (not rpm-no-gpg))
       (let ((build-proc (get-buffer-process
