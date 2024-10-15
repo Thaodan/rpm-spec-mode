@@ -246,10 +246,6 @@ value returned by function `user-mail-address'."
   '("preamble" "description" "prep" "setup" "build" "install" "check" "clean"
     "changelog" "files")
   "Partial list of section names.")
-(defvar rpm-section-list
-  '(("preamble") ("description") ("prep") ("setup") ("build") ("install")
-    ("check") ("clean") ("changelog") ("files"))
-  "Partial list of section names.")
 (defconst rpm-scripts
   ;; trigger, filetrigger, transfiletrigger no found in build/parseScript.c
   '("pre" "post" "preun" "postun"
@@ -1017,7 +1013,7 @@ Go to beginning of current section."
 (defun rpm-goto-section (section)
   "Move point to the beginning of the specified SECTION.
 leave point at previous location."
-  (interactive (list (rpm-completing-read "Section: " rpm-section-list)))
+  (interactive (list (rpm-completing-read "Section: " rpm-sections)))
   (push-mark)
   (goto-char (point-min))
   (or
