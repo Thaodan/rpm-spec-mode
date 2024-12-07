@@ -185,16 +185,16 @@ the package."
 
 (defcustom rpm-spec-user-full-name nil
   "*Full name of the user.
-This is used in the change log and the Packager tag.  It defaults to the
-value returned by function `user-full-name'."
+This is used in the change log and the Packager tag.  If nil, default to
+the value returned by function `user-full-name'."
   :type '(choice (const :tag "Use `user-full-name'" nil)
                  string)
   :group 'rpm-spec)
 
 (defcustom rpm-spec-user-mail-address nil
   "*Email address of the user.
-This is used in the change log and the Packager tag.  It defaults to the
-value returned by function `user-mail-address'."
+This is used in the change log and the Packager tag.  If nil, default to
+the value returned by function `user-mail-address'."
   :type '(choice (const :tag "Use `user-mail-address'" nil)
                  string)
   :group 'rpm-spec)
@@ -781,7 +781,7 @@ with no args, if that value is non-nil."
       (progn
 	(setq rpm-spec-build-command "rpm")
 	(setq rpm-spec-nobuild-option "--test")))
-  
+
   (setq-local paragraph-start (concat "$\\|" page-delimiter))
   (setq-local paragraph-separate paragraph-start)
   (setq-local paragraph-ignore-fill-prefix t)
@@ -881,48 +881,44 @@ using FILETYPE to prompt the user."
     (insert filetype)))
 
 (defun rpm-insert-file (&optional filename)
-  "Insert regular file.
-Use FILENAME or, if interactive, prompt."
-  (interactive "p")
+  "Insert file FILENAME, or prompt if interactive."
+  (interactive)
   (rpm-insert-f "" filename))
 
 (defun rpm-insert-config (&optional filename)
-  "Insert config file.
-FILENAME is the config file."
-  (interactive "p")
+  "Insert config file FILENAME, or prompt if interactive."
+  (interactive)
   (rpm-insert-f "%config " filename))
 
 (defun rpm-insert-doc (&optional filename)
-  "Insert doc file.
-FILENAME is the doc file."
-  (interactive "p")
+  "Insert doc file FILENAME, or prompt if interactive."
+  (interactive)
   (rpm-insert-f "%doc " filename))
 
 (defun rpm-insert-ghost (&optional filename)
-  "Insert ghost file.
-FILENAME is the ghost file."
-  (interactive "p")
+  "Insert ghost file FILENAME, or prompt if interactive."
+  (interactive)
   (rpm-insert-f "%ghost " filename))
 
 (defun rpm-insert-dir (&optional dirname)
-  "Insert directory.
-DIRNAME is the directory."
-  (interactive "p")
+  "Insert directory DIRNAME, or prompt if interactive."
+  (interactive)
   (rpm-insert-f "%dir " dirname))
 
 (defun rpm-insert-docdir (&optional dirname)
-  "Insert doc directory.
-DIRNAME is the directory."
-  (interactive "p")
+  "Insert doc directory DIRNAME, or prompt if interactive."
+  (interactive)
   (rpm-insert-f "%docdir " dirname))
 
 ;;------------------------------------------------------------
-(defun rpm-completing-read (prompt table &optional pred require init hist)
+(defun rpm-completing-read (prompt collection &optional predicate
+                                   require-match initial-input hist)
   "Read from the minibuffer, with completion.
 Like `completing-read', but the variable `rpm-spec-completion-ignore-case'
 controls whether case is significant."
   (let ((completion-ignore-case rpm-spec-completion-ignore-case))
-    (completing-read prompt table pred require init hist)))
+    (completing-read prompt collection predicate
+                     require-match initial-input hist)))
 
 (defun rpm-insert (&optional what file-completion)
   "Insert given tag.  Use FILE-COMPLETION if argument is t.
@@ -931,8 +927,10 @@ WHAT is the tag used."
   (if (not what)
       (setq what (rpm-completing-read "Tag: " rpm-tags-list)))
   (let (read-text insert-text)
+    ;; This function is meant for tags, but we use it to insert some
+    ;; common macros as well.
     (if (string-match "^%" what)
-        (setq read-text (concat "Packagename for " what ": ")
+        (setq read-text (concat "Arg(s) for " what ": ")
               insert-text (concat what " "))
       (setq read-text (concat what ": ")
             insert-text (concat what ": ")))
@@ -955,6 +953,7 @@ WHAT is the tag used."
    (getenv "rpm")
    (if (file-directory-p "~/rpm") "~/rpm/")
    (if (file-directory-p "~/RPM") "~/RPM/")
+   (if (file-directory-p "~/rpmbuild") "~/rpmbuild/")
    (if (file-directory-p "/usr/src/redhat/") "/usr/src/redhat/")
    "/usr/src/RPM"))
 
@@ -993,7 +992,7 @@ WHAT is the tag used."
         (message "%s tag not found..." what))))))
 
 (defun rpm-change-n (what)
-  "Change given tag with possible number."
+  "Change given tag WHAT with possible number."
   (save-excursion
     (goto-char (point-min))
     (let ((number (read-from-minibuffer (concat what " number: "))))
@@ -1024,20 +1023,21 @@ WHAT is the tag used."
                                               nil nil (match-string 1)))))
       (message "Group tag not found..."))))
 
-(defun rpm-insert-tag (&optional arg)
-  "Insert or change a tag."
+(defun rpm-insert-tag (&optional _)
+  "Insert a tag.  With a prefix argument, change an existing tag."
   (interactive "p")
   (if current-prefix-arg
       (rpm-change arg)
     (rpm-insert)))
 
-(defun rpm-change-tag (&optional arg)
-  "Change a tag."
-  (interactive "p")
-  (rpm-change arg))
+(defun rpm-change-tag ()
+  "Change an existing tag."
+  (interactive)
+  (rpm-change))
 
 (defun rpm-insert-packager ()
   "Insert Packager tag."
+  (interactive)
   (beginning-of-line)
   (insert (format "Packager: %s <%s>\n"
                   (or rpm-spec-user-full-name (user-full-name))
@@ -1451,6 +1451,13 @@ if one is present in the file."
         (concat (and with-epoch epoch (concat epoch ":"))
                 version
                 (and release (concat "-" release)))))))
+
+(defun rpm-insert-spec-version (&optional _)
+  "Insert the version string at point.
+With prefix argument, include the Epoch/Serial if present in the file.
+Not to be confused with the obsolete variable `rpm-insert-version'."
+  (interactive "p")
+  (insert (rpm-find-spec-version current-prefix-arg)))
 
 (defun rpm-increase-release-with-macros (&optional increment)
   "Increase release in spec
