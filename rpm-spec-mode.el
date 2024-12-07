@@ -10,6 +10,7 @@
 ;;	Chmouel Boudjnah <chmouel@mandrakesoft.com>
 ;;	Ville Skyttä <ville.skytta@iki.fi>
 ;;	Adam Spiers <elisp@adamspiers.org>
+;; Maintainer: Björn Bidar <bjorn.bidar@thaodan.de>
 
 ;; Keywords: unix languages rpm
 ;; Version:  0.16
