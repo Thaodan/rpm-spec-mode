@@ -1,4 +1,4 @@
-#+TITLE: rpm-spec-mode [[https://stable.melpa.org/#/rpm-spec-mode][https://stable.melpa.org/packages/rpm-spec-mode-badge.svg]] [[https://melpa.org/#/rpm-spec-mode][https://melpa.org/packages/rpm-spec-mode-badge.svg]]
+#+TITLE: rpm-spec-mode\\ [[https://stable.melpa.org/#/rpm-spec-mode][https://stable.melpa.org/packages/rpm-spec-mode-badge.svg]] [[https://melpa.org/#/rpm-spec-mode][https://melpa.org/packages/rpm-spec-mode-badge.svg]]
 
 A major-mode for editing RPM spec files.
 
