@@ -1,4 +1,4 @@
-;;; rpm-spec-mode.el --- RPM spec mode for Emacs/XEmacs -*- lexical-binding:t -*-
+;;; rpm-spec-mode.el --- Major mode for editing RPM spec files -*- lexical-binding:t -*-
 
 ;; Copyright (C) 1997-2015 Stig Bjørlykke, <stig@bjorlykke.org>
 
@@ -32,8 +32,6 @@
 ;; along with RPM-Spec-Mode; see the file COPYING.  If not, write to the
 ;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 ;; Boston, MA 02110-1301 USA.
-
-;;; Synched up with: not in GNU Emacs.
 
 ;;; Thanx to:
 
@@ -85,7 +83,7 @@
 (defconst rpm-spec-mode-version "0.16" "Version of `rpm-spec-mode'.")
 
 (defgroup rpm-spec nil
-  "RPM spec mode with Emacs enhancements."
+  "RPM spec mode."
   :prefix "rpm-spec-"
   :group 'languages)
 
@@ -390,7 +388,6 @@ Can be either a string or a function."
   "*Face for section markers."
   :group 'rpm-spec-faces)
 
-;;; GNU emacs font-lock needs these...
 (defvar rpm-spec-macro-face
   'rpm-spec-macro-face "*Face for RPM macros and variables.")
 (defvar rpm-spec-var-face
@@ -802,7 +799,6 @@ with no args, if that value is non-nil."
 ;  (setq-local comment-indent-function 'c-comment-indent)
   (setq-local comment-region-function #'rpm-spec-mode-comment-region)
   (setq-local uncomment-region-function #'rpm-spec-mode-uncomment-region)
-  ;;Initialize font lock for GNU emacs.
   (make-local-variable 'font-lock-defaults)
   (font-lock-add-keywords nil rpm-spec-font-lock-keywords)
   ;; shell-script-mode would try to detect the shell type to accommodate
