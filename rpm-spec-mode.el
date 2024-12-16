@@ -15,7 +15,7 @@
 ;; Keywords: unix languages rpm
 ;; Version:  0.16
 ;; URL: https://github.com/Thaodan/rpm-spec-mode/
-;; Package-Requires: ((emacs "27.1"))
+;; Package-Requires: ((emacs "29.0.90"))
 
 ;; This file was part of XEmacs.
 ;; RPM-Spec-Mode is free software; you can redistribute it and/or modify
