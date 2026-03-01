@@ -808,7 +808,7 @@ with no args, if that value is non-nil."
   ;; FIXME: set `sh-ancestors' list based on '%_buildshell'.
   ;; call a custom version of `sh--guess-shell' which compares against
   ;; the macro.
-  (sh-set-shell "rpm" nil nil)
+  (ignore-errors (sh-set-shell "rpm" nil nil))
   (rpm-spec-mode-imenu-setup))
 
 (defun rpm-command-filter (process string)
