@@ -189,7 +189,7 @@ the package."
   "Full name of the user in the change log and Packager tag.
 Can be either a string or a function."
   :type '(choice function
-				 string)
+                 string)
   :group 'rpm-spec)
 
 (defcustom rpm-spec-user-mail-address user-mail-address
@@ -498,7 +498,7 @@ Can be either a string or a function."
 
 (defvar rpm-tags-regexp
   (concat "\\(\\<" (regexp-opt (mapcar 'car rpm-tags-list))
-	  "\\|\\(Patch\\|Source\\)[0-9]+\\>\\)")
+          "\\|\\(Patch\\|Source\\)[0-9]+\\>\\)")
   "Regular expression for matching valid tags.")
 
 (defvar rpm-obsolete-tags-list
@@ -785,19 +785,19 @@ with no args, if that value is non-nil."
 
   (if (not (executable-find "rpmbuild"))
       (progn
-	(setq rpm-spec-build-command "rpm")
-	(setq rpm-spec-nobuild-option "--test")))
-  
+        (setq rpm-spec-build-command "rpm")
+        (setq rpm-spec-nobuild-option "--test")))
+
   (setq-local paragraph-start (concat "$\\|" page-delimiter))
   (setq-local paragraph-separate paragraph-start)
   (setq-local paragraph-ignore-fill-prefix t)
-;  (setq-local indent-line-function 'c-indent-line)
+  ;; (setq-local indent-line-function 'c-indent-line)
   (setq-local require-final-newline t)
   (setq-local comment-start "# ")
   (setq-local comment-end "")
   (setq-local comment-column 32)
   (setq-local comment-start-skip "#+ *")
-;  (setq-local comment-indent-function 'c-comment-indent)
+  ;; (setq-local comment-indent-function 'c-comment-indent)
   (setq-local comment-region-function #'rpm-spec-mode-comment-region)
   (setq-local uncomment-region-function #'rpm-spec-mode-uncomment-region)
   ;;Initialize font lock for GNU emacs.
@@ -838,10 +838,10 @@ If `rpm-change-log-uses-utc' is nil, \"today\" means the local time zone."
   (rpm-goto-section "changelog")
   (let* ((address (if (functionp rpm-spec-user-mail-address)
                       (funcall rpm-spec-user-mail-address)
-					rpm-spec-user-mail-address))
+                    rpm-spec-user-mail-address))
          (fullname (if (functionp rpm-spec-user-full-name)
-					   (funcall rpm-spec-user-full-name)
-					 rpm-spec-user-full-name))
+                       (funcall rpm-spec-user-full-name)
+                     rpm-spec-user-full-name))
          (system-time-locale "C")
          (change-log-header (format "* %s %s <%s> - %s"
                                     (rpm-change-log-date-string)
@@ -858,16 +858,16 @@ CHANGE-LOG-ENTRY will be used if provided."
   (interactive "sChange log entry: ")
   (save-excursion
     (rpm-goto-add-change-log-header)
-      (while (looking-at "^-")
-             (forward-line))
-      (insert "- " change-log-entry "\n")))
+    (while (looking-at "^-")
+      (forward-line))
+    (insert "- " change-log-entry "\n")))
 
 (defun rpm-goto-add-change-log-entry ()
   "Goto change log and add an header for today (if needed)."
   (interactive)
   (rpm-goto-add-change-log-header)
   (while (looking-at "^-")
-         (forward-line))
+    (forward-line))
   (insert "- \n")
   (end-of-line '0))
 
@@ -956,7 +956,7 @@ WHAT is the tag used."
 (defun rpm--topdir ()
   "Try user environment for rpmbuild topdir or default to custom setting."
   (let ((rpm-envdir (or (getenv "RPM")
-                         (getenv "rpm"))))
+                        (getenv "rpm"))))
     (if (file-directory-p rpm-envdir)
         rpm-envdir
       rpm-build-topdir)))
@@ -979,7 +979,7 @@ WHAT is the tag used."
   "Update given tag (WHAT)."
   (save-excursion
     (if (not what)
-		;; interactive
+        ;; interactive
         (setq what (rpm-completing-read "Tag: " rpm-tags-list)))
     (cond
      ((string-equal what "Group")
@@ -1047,11 +1047,11 @@ With a prefix argument, change an existing tag."
   (beginning-of-line)
   (insert (format "Packager: %s <%s>\n"
                   (if (functionp rpm-spec-user-full-name)
-					  (funcall rpm-spec-user-full-name)
-					rpm-spec-user-full-name)
+                      (funcall rpm-spec-user-full-name)
+                    rpm-spec-user-full-name)
                   (if (functionp rpm-spec-user-mail-address)
                       (funcall rpm-spec-user-mail-address)
-					rpm-spec-user-mail-address))))
+                    rpm-spec-user-mail-address))))
 
 (defun rpm-change-packager ()
   "Update Packager tag."
@@ -1099,7 +1099,7 @@ Go to beginning of current section."
   (if (re-search-forward rpm-section-regexp nil t)
       (forward-line -1)
     (goto-char (point-max)))
-;;  (while (or (looking-at paragraph-separate) (looking-at "^\\s-*#"))
+  ;;  (while (or (looking-at paragraph-separate) (looking-at "^\\s-*#"))
   (while (looking-at "^\\s-*\\($\\|#\\)")
     (forward-line -1))
   (forward-line 1)
@@ -1192,29 +1192,29 @@ leave point at previous location."
 
   (if rpm-spec-auto-topdir
       (if (string-match ".*/SPECS/$" default-directory)
-	  (let ((topdir (expand-file-name default-directory)))
-	    (setq buildoptions
-		  (cons
-		   (concat "--define \"_topdir "
-			   (replace-regexp-in-string "/SPECS/$" "" topdir)
-			   "\"")
-		   buildoptions)))))
+          (let ((topdir (expand-file-name default-directory)))
+            (setq buildoptions
+                  (cons
+                   (concat "--define \"_topdir "
+                           (replace-regexp-in-string "/SPECS/$" "" topdir)
+                           "\"")
+                   buildoptions)))))
 
   (compilation-start (mapconcat #'identity (cons rpm-spec-build-command buildoptions) " ") 'rpmbuild-mode)
 
   (if (and rpm-spec-sign-gpg (not rpm-no-gpg))
       (let ((build-proc (get-buffer-process
-			 (get-buffer
-			  (compilation-buffer-name "rpmbuild" nil nil))))
-	    (rpm-passwd-cache (read-passwd "GPG passphrase: ")))
-	(process-send-string build-proc (concat rpm-passwd-cache "\n")))))
+                         (get-buffer
+                          (compilation-buffer-name "rpmbuild" nil nil))))
+            (rpm-passwd-cache (read-passwd "GPG passphrase: ")))
+        (process-send-string build-proc (concat rpm-passwd-cache "\n")))))
 
 (defun rpm-build-prepare ()
   "Run a `rpmbuild -bp'."
   (interactive)
   (if rpm-spec-short-circuit
       (message "Cannot run `%s -bp' with --short-circuit"
-	       rpm-spec-build-command)
+               rpm-spec-build-command)
     (setq rpm-no-gpg t)
     (rpm-build "-bp")))
 
@@ -1223,7 +1223,7 @@ leave point at previous location."
   (interactive)
   (if rpm-spec-short-circuit
       (message "Cannot run `%s -bl' with --short-circuit"
-	       rpm-spec-build-command)
+               rpm-spec-build-command)
     (setq rpm-no-gpg t)
     (rpm-build "-bl")))
 
@@ -1244,7 +1244,7 @@ leave point at previous location."
   (interactive)
   (if rpm-spec-short-circuit
       (message "Cannot run `%s -bb' with --short-circuit"
-	       rpm-spec-build-command)
+               rpm-spec-build-command)
     (setq rpm-no-gpg nil)
     (rpm-build "-bb")))
 
@@ -1253,7 +1253,7 @@ leave point at previous location."
   (interactive)
   (if rpm-spec-short-circuit
       (message "Cannot run `%s -bs' with --short-circuit"
-	       rpm-spec-build-command)
+               rpm-spec-build-command)
     (setq rpm-no-gpg nil)
     (rpm-build "-bs")))
 
@@ -1262,7 +1262,7 @@ leave point at previous location."
   (interactive)
   (if rpm-spec-short-circuit
       (message "Cannot run `%s -ba' with --short-circuit"
-	       rpm-spec-build-command)
+               rpm-spec-build-command)
     (setq rpm-no-gpg nil)
     (rpm-build "-ba")))
 
@@ -1401,20 +1401,20 @@ command."
   "Increase the release tag by ARG or 1 if ARG is nil."
   (interactive "p")
   (let ((arg (or arg 1)))
-  (save-excursion
-    (goto-char (point-min))
-    (if (search-forward-regexp
-         ;; Try to find the last digit-only group of a dot-separated release string
-         (concat "^\\(Release[ \t]*:[ \t]*\\)"
-                 "\\(.*[ \t\\.}]\\)\\([0-9]+\\)\\([ \t\\.%].*\\|$\\)") nil t)
-        (let ((release (+ arg (string-to-number (match-string 3)))))
-          (setq release
-                (concat (match-string 2) (int-to-string release) (match-string 4)))
-          (replace-match (concat (match-string 1) release))
-          (message "Release tag changed to %s." release))
-      (if (search-forward-regexp "^Release[ \t]*:[ \t]*%{?\\([^}]*\\)}?$" nil t)
-          (rpm-increase-release-with-macros)
-        (message "No Release tag to increase found..."))))))
+    (save-excursion
+      (goto-char (point-min))
+      (if (search-forward-regexp
+           ;; Try to find the last digit-only group of a dot-separated release string
+           (concat "^\\(Release[ \t]*:[ \t]*\\)"
+                   "\\(.*[ \t\\.}]\\)\\([0-9]+\\)\\([ \t\\.%].*\\|$\\)") nil t)
+          (let ((release (+ arg (string-to-number (match-string 3)))))
+            (setq release
+                  (concat (match-string 2) (int-to-string release) (match-string 4)))
+            (replace-match (concat (match-string 1) release))
+            (message "Release tag changed to %s." release))
+        (if (search-forward-regexp "^Release[ \t]*:[ \t]*%{?\\([^}]*\\)}?$" nil t)
+            (rpm-increase-release-with-macros)
+          (message "No Release tag to increase found..."))))))
 
 ;;------------------------------------------------------------
 
@@ -1468,28 +1468,28 @@ if one is present in the file."
   "Increase release in spec.
 Either by INCREMENT or 1 if not given."
   (let ((increment (or increment 1)))
-  (save-excursion
-    (let ((str
-           (progn
-             (goto-char (point-min))
-             (search-forward-regexp "^Release[ \t]*:[ \t]*\\(.+\\).*$" nil)
-             (match-string 1))))
-      (let ((inrel
-             (if (string-match "%{?\\([^}]*\\)}?$" str)
-                 (progn
-                   (goto-char (point-min))
-                   (let ((macros (substring str (match-beginning 1)
-                                            (match-end 1))))
-                     (search-forward-regexp
-                      (concat "%define[ \t]+" macros
-                              "[ \t]+\\(\\([0-9]\\|\\.\\)+\\)\\(.*\\)"))
-                     (concat macros " " (int-to-string (+ increment (string-to-number
-                                                            (match-string 1))))
-                             (match-string 3))))
-               str)))
-        (let ((dinrel inrel))
-          (replace-match (concat "%define " dinrel))
-          (message "Release tag changed to %s." dinrel)))))))
+    (save-excursion
+      (let ((str
+             (progn
+               (goto-char (point-min))
+               (search-forward-regexp "^Release[ \t]*:[ \t]*\\(.+\\).*$" nil)
+               (match-string 1))))
+        (let ((inrel
+               (if (string-match "%{?\\([^}]*\\)}?$" str)
+                   (progn
+                     (goto-char (point-min))
+                     (let ((macros (substring str (match-beginning 1)
+                                              (match-end 1))))
+                       (search-forward-regexp
+                        (concat "%define[ \t]+" macros
+                                "[ \t]+\\(\\([0-9]\\|\\.\\)+\\)\\(.*\\)"))
+                       (concat macros " " (int-to-string (+ increment (string-to-number
+                                                                       (match-string 1))))
+                               (match-string 3))))
+                 str)))
+          (let ((dinrel inrel))
+            (replace-match (concat "%define " dinrel))
+            (message "Release tag changed to %s." dinrel)))))))
 
 ;;------------------------------------------------------------
 
@@ -1511,28 +1511,28 @@ Either by INCREMENT or 1 if not given."
       (setq name (match-string 1 file))))
 
     (if rpm-spec-indent-heading-values
-	(insert
-	 "Summary:        "
-	 "\nName:           " (or name "")
-	 "\nVersion:        " (or version "")
-	 "\nRelease:        " (or release "")
-	 (if rpm-spec-default-epoch
-	     (concat "\nEpoch:          "
-		     (int-to-string rpm-spec-default-epoch))
-	   "")
-	 "\nLicense:        "
-	 "\nGroup:          "
-	 "\nURL:            "
-	 "\nSource0:        %{name}-%{version}.tar.gz"
-	 "\nBuildRoot:      " rpm-spec-default-buildroot)
+        (insert
+         "Summary:        "
+         "\nName:           " (or name "")
+         "\nVersion:        " (or version "")
+         "\nRelease:        " (or release "")
+         (if rpm-spec-default-epoch
+             (concat "\nEpoch:          "
+                     (int-to-string rpm-spec-default-epoch))
+           "")
+         "\nLicense:        "
+         "\nGroup:          "
+         "\nURL:            "
+         "\nSource0:        %{name}-%{version}.tar.gz"
+         "\nBuildRoot:      " rpm-spec-default-buildroot)
       (insert
        "Summary: "
        "\nName: " (or name "")
        "\nVersion: " (or version "")
        "\nRelease: " (or release "")
        (if rpm-spec-default-epoch
-	   (concat "\nEpoch: " (int-to-string rpm-spec-default-epoch))
-	 "")
+           (concat "\nEpoch: " (int-to-string rpm-spec-default-epoch))
+         "")
        "\nLicense: "
        "\nGroup: "
        "\nURL: "
@@ -1565,11 +1565,11 @@ Either by INCREMENT or 1 if not given."
   (let* ((file (or (macroexp-file-name) buffer-file-name))
          (package-version (lm-version file))
          (package-maintainer (car (lm-maintainers file))))
-  (message
-   (format "rpm-spec-mode version %s by %s <%s>"
-           package-version
-           (car package-maintainer)
-           (cdr package-maintainer)))))
+    (message
+     (format "rpm-spec-mode version %s by %s <%s>"
+             package-version
+             (car package-maintainer)
+             (cdr package-maintainer)))))
 
 ;;;###autoload(add-to-list 'auto-mode-alist '("\\.spec\\(\\.in\\)?$" . rpm-spec-mode))
 
