@@ -89,39 +89,33 @@
 
 (defcustom rpm-spec-build-command "rpmbuild"
   "Command for building an RPM package."
-  :type 'string
-  :group 'rpm-spec)
+  :type 'string)
 
 (defcustom rpm-spec-add-attr nil
   "Add \"%attr\" entry for file listings or not."
-  :type 'boolean
-  :group 'rpm-spec)
+  :type 'boolean)
 
 (defcustom rpm-spec-short-circuit nil
   "Skip straight to specified stage.
 \(I.e., skip all stages leading up to the specified stage).  Only valid
 in \"%build\" and \"%install\" stage."
-  :type 'boolean
-  :group 'rpm-spec)
+  :type 'boolean)
 
 (defcustom rpm-spec-timecheck "0"
   "Set the \"timecheck\" age (0 to disable).
 The timecheck value expresses, in seconds, the maximum age of a file
 being packaged.  Warnings will be printed for all files beyond the
 timecheck age."
-  :type 'integer
-  :group 'rpm-spec)
+  :type 'integer)
 
 (defcustom rpm-spec-buildroot ""
   "When building, override the BuildRoot tag with directory <dir>."
-  :type 'string
-  :group 'rpm-spec)
+  :type 'string)
 
 (defcustom rpm-spec-target ""
   "Interpret given string as `arch-vendor-os'.
 Set the macros _target, _target_arch and _target_os accordingly"
-  :type 'string
-  :group 'rpm-spec)
+  :type 'string)
 
 (define-obsolete-variable-alias
   'rpm-completion-ignore-case 'rpm-spec-completion-ignore-case "0.12")
@@ -130,122 +124,102 @@ Set the macros _target, _target_arch and _target_os accordingly"
   "*Non-nil means that case differences are ignored during completion.
 A value of nil means that case is significant.
 This is used during Tempo template completion."
-  :type 'boolean
-  :group 'rpm-spec)
+  :type 'boolean)
 
 (defcustom rpm-spec-clean nil
   "Remove the build tree after the packages are made."
-  :type 'boolean
-  :group 'rpm-spec)
+  :type 'boolean)
 
 (defcustom rpm-spec-rmsource nil
   "Remove the source and spec file after the packages are made."
-  :type 'boolean
-  :group 'rpm-spec)
+  :type 'boolean)
 
 (define-obsolete-variable-alias
   'rpm-spec-test 'rpm-spec-nobuild "0.12")
 
 (defcustom rpm-spec-nobuild nil
   "Do not execute any build stages.  Useful for testing out spec files."
-  :type 'boolean
-  :group 'rpm-spec)
+  :type 'boolean)
 
 (defcustom rpm-spec-quiet nil
   "Print as little as possible.
 Normally only error messages will be displayed."
-  :type 'boolean
-  :group 'rpm-spec)
+  :type 'boolean)
 
 (defcustom rpm-spec-sign-gpg nil
   "Embed a GPG signature in the package.
 This signature can be used to verify the integrity and the origin of
 the package."
-  :type 'boolean
-  :group 'rpm-spec)
+  :type 'boolean)
 
 (defcustom rpm-spec-nodeps nil
   "Do not verify build dependencies."
-  :type 'boolean
-  :group 'rpm-spec)
+  :type 'boolean)
 
 (define-obsolete-variable-alias
   'rpm-initialize-sections 'rpm-spec-initialize-sections "0.12")
 
 (defcustom rpm-spec-initialize-sections t
   "Automatically add empty section headings to new spec files."
-  :type 'boolean
-  :group 'rpm-spec)
+  :type 'boolean)
 
 (define-obsolete-variable-alias
   'rpm-insert-version 'rpm-spec-insert-changelog-version "0.12")
 
 (defcustom rpm-spec-insert-changelog-version t
   "Automatically add version in a new change log entry."
-  :type 'boolean
-  :group 'rpm-spec)
+  :type 'boolean)
 
 (defcustom rpm-spec-user-full-name user-full-name
   "Full name of the user in the change log and Packager tag.
 Can be either a string or a function."
   :type '(choice function
-				 string)
-  :group 'rpm-spec)
+				 string))
 
 (defcustom rpm-spec-user-mail-address user-mail-address
   "Email address of the user used in the change log and the Packager tag.
 Can be either a string or a function."
   :type '(choice function
-                 string)
-  :group 'rpm-spec)
+                 string))
 
 (defcustom rpm-spec-indent-heading-values nil
   "*Indent values for all tags in the \"heading\" of the spec file."
-  :type 'boolean
-  :group 'rpm-spec)
+  :type 'boolean)
 
 (defcustom rpm-spec-default-release "1"
   "*Default value for the Release tag in new spec files."
-  :type 'string
-  :group 'rpm-spec)
+  :type 'string)
 
 (defcustom rpm-spec-default-epoch nil
   "*If non-nil, default value for the Epoch tag in new spec files."
-  :type '(choice (const :tag "No Epoch" nil) integer)
-  :group 'rpm-spec)
+  :type '(choice (const :tag "No Epoch" nil) integer))
 
 (defcustom rpm-spec-default-buildroot
   "%{_tmppath}/%{name}-%{version}-%{release}-root"
   "*Default value for the BuildRoot tag in new spec files."
-  :type 'integer
-  :group 'rpm-spec)
+  :type 'integer)
 
 (defcustom rpm-spec-default-build-section ""
   "*Default %build section in new spec files."
-  :type 'string
-  :group 'rpm-spec)
+  :type 'string)
 
 (defcustom rpm-spec-default-install-section "rm -rf $RPM_BUILD_ROOT\n"
   "*Default %install section in new spec files."
-  :type 'string
-  :group 'rpm-spec)
+  :type 'string)
 
 (defcustom rpm-spec-default-clean-section "rm -rf $RPM_BUILD_ROOT\n"
   "*Default %clean section in new spec files."
-  :type 'string
-  :group 'rpm-spec)
+  :type 'string)
 
 (defcustom rpm-spec-auto-topdir nil
   "*Automatically detect an rpm build directory tree and define _topdir."
-  :type 'boolean
-  :group 'rpm-spec)
+  :type 'boolean)
 
 (defcustom rpm-build-topdir "~/rpmbuild"
   "Rpm _topdir directory to be used when calling rpmbuild."
   :type 'directory
   :safe t
-  :package-version '(rpm-spec . 0.17.0)
-  :group 'rpm-spec)
+  :package-version '(rpm-spec . 0.17.0))
 
 (defgroup rpm-spec-faces nil
   "Font lock faces for `rpm-spec-mode'."
@@ -345,48 +319,39 @@ Can be either a string or a function."
 
 (defface rpm-spec-tag-face
   '((t (:inherit font-lock-keyword-face)))
-  "*Face for tags."
-  :group 'rpm-spec-faces)
+  "Face for tags.")
 
 (defface rpm-spec-obsolete-tag-face
   '((t (:inherit font-lock-warning-face)))
-  "*Face for obsolete tags."
-  :group 'rpm-spec-faces)
+  "Face for obsolete tags.")
 
 (defface rpm-spec-macro-face
   '((t (:inherit font-lock-preprocessor-face)))
-  "*Face for RPM macros and variables."
-  :group 'rpm-spec-faces)
+  "Face for RPM macros and variables.")
 
 (defface rpm-spec-var-face
   '((t (:inherit font-lock-variable-name-face)))
-  "*Face for environment variables."
-  :group 'rpm-spec-faces)
+  "Face for environment variables.")
 
 (defface rpm-spec-doc-face
   '((t (:inherit font-lock-doc-face)))
-  "*Face for %doc and %license entries in %files."
-  :group 'rpm-spec-faces)
+  "Face for %doc and %license entries in %files.")
 
 (defface rpm-spec-dir-face
   '((t (:inherit font-lock-string-face)))
-  "*Face for %dir entries in %files."
-  :group 'rpm-spec-faces)
+  "Face for %dir entries in %files.")
 
 (defface rpm-spec-package-face
   '((t (:inherit font-lock-function-name-face)))
-  "*Face for package tag."
-  :group 'rpm-spec-faces)
+  "Face for package tag.")
 
 (defface rpm-spec-ghost-face
   '((t (:inherit font-lock-string-face)))
-  "*Face for %ghost and %config entries in %files."
-  :group 'rpm-spec-faces)
+  "Face for %ghost and %config entries in %files.")
 
 (defface rpm-spec-section-face
   '((t (:inherit font-lock-function-name-face)))
-  "*Face for section markers."
-  :group 'rpm-spec-faces)
+  "Face for section markers.")
 
 ;;; GNU emacs font-lock needs these...
 (defvar rpm-spec-macro-face
