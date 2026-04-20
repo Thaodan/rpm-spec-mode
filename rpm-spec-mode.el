@@ -743,7 +743,7 @@ indentation.  It has its own abbrev table and its own syntax table.
 
 Turning on RPM spec mode calls the value of the variable `rpm-spec-mode-hook'
 with no args, if that value is non-nil."
-  (rpm-update-mode-name)
+  (rpm--set-mode-name)
 
   (if (and (= (buffer-size) 0) rpm-spec-initialize-sections)
       (run-hooks 'rpm-spec-mode-new-file-hook))
@@ -1248,7 +1248,7 @@ command."
   "Toggle `rpm-spec-short-circuit'."
   (interactive)
   (setq rpm-spec-short-circuit (not rpm-spec-short-circuit))
-  (rpm-update-mode-name)
+  (force-mode-line-update)
   (message (format "Turned `--short-circuit' %s."
                    (if rpm-spec-short-circuit "on" "off"))))
 
@@ -1256,7 +1256,7 @@ command."
   "Toggle `rpm-spec-rmsource'."
   (interactive)
   (setq rpm-spec-rmsource (not rpm-spec-rmsource))
-  (rpm-update-mode-name)
+  (force-mode-line-update)
   (message (format "Turned `--rmsource' %s."
                    (if rpm-spec-rmsource "on" "off"))))
 
@@ -1264,7 +1264,7 @@ command."
   "Toggle `rpm-spec-clean'."
   (interactive)
   (setq rpm-spec-clean (not rpm-spec-clean))
-  (rpm-update-mode-name)
+  (force-mode-line-update)
   (message (format "Turned `--clean' %s."
                    (if rpm-spec-clean "on" "off"))))
 
@@ -1272,7 +1272,7 @@ command."
   "Toggle `rpm-spec-nobuild'."
   (interactive)
   (setq rpm-spec-nobuild (not rpm-spec-nobuild))
-  (rpm-update-mode-name)
+  (force-mode-line-update)
   (message (format "Turned `%s' %s."
                    rpm-spec-nobuild-option
                    (if rpm-spec-nobuild "on" "off"))))
@@ -1281,7 +1281,7 @@ command."
   "Toggle `rpm-spec-quiet'."
   (interactive)
   (setq rpm-spec-quiet (not rpm-spec-quiet))
-  (rpm-update-mode-name)
+  (force-mode-line-update)
   (message (format "Turned `--quiet' %s."
                    (if rpm-spec-quiet "on" "off"))))
 
@@ -1289,7 +1289,7 @@ command."
   "Toggle `rpm-spec-sign-gpg'."
   (interactive)
   (setq rpm-spec-sign-gpg (not rpm-spec-sign-gpg))
-  (rpm-update-mode-name)
+  (force-mode-line-update)
   (message (format "Turned `--sign' %s."
                    (if rpm-spec-sign-gpg "on" "off"))))
 
@@ -1297,7 +1297,7 @@ command."
   "Toggle `rpm-spec-add-attr'."
   (interactive)
   (setq rpm-spec-add-attr (not rpm-spec-add-attr))
-  (rpm-update-mode-name)
+  (force-mode-line-update)
   (message (format "Default add \"attr\" entry turned %s."
                    (if rpm-spec-add-attr "on" "off"))))
 
@@ -1305,24 +1305,25 @@ command."
   "Toggle `rpm-spec-nodeps'."
   (interactive)
   (setq rpm-spec-nodeps (not rpm-spec-nodeps))
-  (rpm-update-mode-name)
+  (force-mode-line-update)
   (message (format "Turned `--nodeps' %s."
                    (if rpm-spec-nodeps "on" "off"))))
 
-(defun rpm-update-mode-name ()
+(defun rpm--set-mode-name ()
   "Update `mode-name' according to values set."
-  (setq mode-name "RPM-SPEC")
-  (let ((modes (concat (if rpm-spec-add-attr      "A")
-                       (if rpm-spec-clean         "C")
-                       (if rpm-spec-nodeps        "D")
-                       (if rpm-spec-sign-gpg      "G")
-                       (if rpm-spec-nobuild       "N")
-                       (if rpm-spec-rmsource      "R")
-                       (if rpm-spec-short-circuit "S")
-                       (if rpm-spec-quiet         "Q")
-                       )))
-    (if (not (equal modes ""))
-        (setq mode-name (concat mode-name ":" modes)))))
+  (let* ((alist '((rpm-spec-add-attr      "A")
+                  (rpm-spec-clean         "C")
+                  (rpm-spec-nodeps        "D")
+                  (rpm-spec-sign-gpg      "G")
+                  (rpm-spec-nobuild       "N")
+                  (rpm-spec-rmsource      "R")
+                  (rpm-spec-short-circuit "S")
+                  (rpm-spec-quiet         "Q")))
+         (sep ""))
+    (dolist (x alist)
+      (setq sep `(,(car x) ":" ,sep)))
+    (setq mode-name
+          `("RPM-SPEC" ,sep ,@(mapcar (lambda (x) `(,(car x) ,(cadr x) "")) alist)))))
 
 ;;------------------------------------------------------------
 
