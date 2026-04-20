@@ -462,7 +462,7 @@ Can be either a string or a function."
   "List of elements that are valid tags.")
 
 (defvar rpm-tags-regexp
-  (concat "\\(\\<" (regexp-opt (mapcar 'car rpm-tags-list))
+  (concat "\\(\\<" (regexp-opt (mapcar #'car rpm-tags-list))
 	  "\\|\\(Patch\\|Source\\)[0-9]+\\>\\)")
   "Regular expression for matching valid tags.")
 
@@ -475,7 +475,7 @@ Can be either a string or a function."
   "List of elements that are obsolete tags in some versions of rpm.")
 
 (defvar rpm-obsolete-tags-regexp
-  (regexp-opt (mapcar 'car rpm-obsolete-tags-list) 'words)
+  (regexp-opt (mapcar #'car rpm-obsolete-tags-list) 'words)
   "Regular expression for matching obsolete tags.")
 
 (defvar rpm-group-tags-list
@@ -732,7 +732,7 @@ leaves point makes no difference."
     rpm-imenu-index))
 
 ;;------------------------------------------------------------
-(add-hook 'rpm-spec-mode-new-file-hook 'rpm-spec-initialize)
+(add-hook 'rpm-spec-mode-new-file-hook #'rpm-spec-initialize)
 
 ;;;###autoload
 (define-derived-mode rpm-spec-mode shell-script-mode "RPM"
