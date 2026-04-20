@@ -1536,7 +1536,7 @@ Either by INCREMENT or 1 if not given."
            (car package-maintainer)
            (cdr package-maintainer)))))
 
-;;;###autoload(add-to-list 'auto-mode-alist '("\\.spec\\(\\.in\\)?$" . rpm-spec-mode))
+;;;###autoload(add-to-list 'auto-mode-alist '("\\.spec\\(\\.in\\)?\\'" . rpm-spec-mode))
 
 (provide 'rpm-spec-mode)
 ;;;###autoload
