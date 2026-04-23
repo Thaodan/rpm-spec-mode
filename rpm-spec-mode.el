@@ -678,7 +678,7 @@ Can be either a string or a function."
 But also escape the % character by duplicating it to prevent macro expansion.
 ARG is passed on to `comment-region-default'."
   (comment-region-default beg
-                          (+ end (replace-string-in-region "%" "%%" beg end))
+                          (+ end (or (replace-string-in-region "%" "%%" beg end) 0))
                           arg))
 
 (defun rpm-spec-mode-uncomment-region (beg end &optional arg)
@@ -687,7 +687,7 @@ But also revert the escape of the % character by deduplicating it which
 reenables macro expansion.
 ARG is passed on to `uncomment-region-default'."
   (uncomment-region-default beg
-                            (- end (replace-string-in-region "%%" "%" beg end))
+                            (- end (or (replace-string-in-region "%%" "%" beg end) 0))
                             arg))
 
 
