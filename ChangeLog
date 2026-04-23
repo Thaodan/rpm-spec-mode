@@ -1,10 +1,10 @@
-2009-02-20  Ville Skytt  <scop@xemacs.org>
+2009-02-20  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el (rpm-spec-font-lock-keywords): Fontify
 	package names after %pretrans and %posttrans.
 	(rpm-spec-mode-version): Set to 0.12.3x.
 
-2008-10-10  Ville Skytt  <scop@xemacs.org>
+2008-10-10  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el (rpm-increase-release-with-macros): Anchor
 	another tag search regexp at beginning of line, drop unneeded concat.
@@ -15,25 +15,25 @@
 	* rpm-spec-mode.el (rpm-spec-field-value): Tags must start at
 	beginning of line, anchor search regexp there.
 
-2008-02-10  Ville Skytt  <scop@xemacs.org>
+2008-02-10  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el (rpm-increase-release-tag): Increase last digit
 	of the release tag instead of the first (eg. Y of X.Y, not X), with
 	some heuristics in deciding what the desired "last" digit is.
 	(rpm-spec-mode-version): Set to 0.12.1x.
 
-2007-11-01  Ville Skytt  <scop@xemacs.org>
+2007-11-01  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el (rpm-spec-user-mail-address): New compatibility
 	wrapper function, takes care eg. of `user-mail-address' not being
 	a function in GNU Emacs.
 
-2007-05-27  Ville Skytt  <scop@xemacs.org>
+2007-05-27  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el (rpm-spec-field-value): Use `condition-case'
 	instead of `ignore-errors' (not autoloaded in GNU Emacs).
 
-2007-05-09  Ville Skytt  <scop@xemacs.org>
+2007-05-09  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el: Update FSF's address in comments.
 	(rpm-spec-mode-version): 0.12x.
@@ -60,7 +60,7 @@
 	(rpm-spec-font-lock-keywords): Ditto.
 	(rpm-spec-font-lock-keywords): Treat %global like %define.
 
-2005-07-08  Ville Skytt  <scop@xemacs.org>
+2005-07-08  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el (rpm-spec-build-command): Sync with upstream.
 	(rpm-section-regexp): Sync with rpm 4.4.1.
@@ -69,29 +69,29 @@
 
 	* rpm-spec-mode.el.upstream: Sync with upstream.
 
-2003-09-02  Ville Skytt  <scop@xemacs.org>
+2003-09-02  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el (rpm-spec-intitialize): Integer concatenation
 	fix for default-epoch != nil, avoid extra newline at the end.
 	Thanks to Enrico Scholz.
 
-2003-08-18  Ville Skytt  <scop@xemacs.org>
+2003-08-18  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el: Add %check section (rpm >= 4.1.1).
 	Fix/sync XEmacs/GNU -style face docstrings.
 	Add support for highlighting specfile section markers.
 
-2003-08-03  Ville Skytt  <scop@xemacs.org>
+2003-08-03  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el (rpm-build): Set EMACS=t in environment
 	to emulate `compilation-mode'.
 	(rpm-spec-faces): Add "rpm-spec-" prefix.
 
-2003-06-27  Damien Nad  <anvil@livna.org>
+2003-06-27  Damien Nadé <anvil@livna.org>
 
 	* rpm-spec-mode.el (rpm-spec-field-value): Fix macro expansion.
 
-2003-06-27  Damien Nad  <anvil@livna.org>
+2003-06-27  Damien Nadé <anvil@livna.org>
 
 	* rpm-spec-mode.el: New customization options.
 	(rpm-spec-default-release): New.
@@ -102,31 +102,31 @@
 	(rpm-spec-default-buildroot): New.
 	(rpm-spec-mode-new-file-hook): New.
 
-2003-06-27  Ville Skytt  <scop@xemacs.org>
+2003-06-27  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el (rpm-spec-font-lock-keywords):
 	Allow underscores in tags (eg. for Summary(en_US)).
 	(auto-mode-alist): Use rpm-spec-mode for *.spec.in too.
 
-2003-01-19  Ville Skytt  <scop@xemacs.org>
+2003-01-19  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el (rpm-spec-use-compilation-mode): New.
 	(rpm-build): Prompt for saving if buffer modified, build
 	in compilation-mode if it's available and
 	rpm-spec-use-compilation-mode is non-nil.
 
-2003-01-06  Ville Skytt  <scop@xemacs.org>
+2003-01-06  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el: Make auto-mode and interpreter-mode-alist modifications
 	autoload-only.
 
-2002-11-20  Ville Skytt  <scop@xemacs.org>
+2002-11-20  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el (rpm-spec-font-lock-keywords): Handle
 	%config(noreplace) and friends.
 	(rpm-spec-initialize): Indent headings to column 16.
 
-2002-10-23  Stig Bjorlykke  <stigb@tihlde.org>
+2002-10-23  Stig Bjørlykke <stigb@tihlde.org>
 
 	* rpm-spec-mode.el (rpm-spec-rpm-build-command): Removed.
 	(rpm-spec-nobuild): Replaced rpm-spec-test.
@@ -141,20 +141,20 @@
 	(rpm-spec-initialize): Indent according to "indent-heading-values".
 	(rpm-add-change-log-entry): Add " - " if adding version.
 
-2002-10-04  Ville Skytt  <scop@xemacs.org>
+2002-10-04  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el (rpm-spec-rpm-build-command):
 	New custom variable for configuring the rpm build command.
 	(rpm-build): Use `rpm-spec-rpm-build-command'.
 	(rpm-spec-initialize): Minor tweaks to initial spec file.
 
-2002-07-23  Ville Skytt  <scop@xemacs.org>
+2002-07-23  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el: Syntax highlighting tweaks.
 	(rpm-spec-mode): Call (rpm-update-mode-name)
 	on startup so modeline starts with correct status.
 
-2002-07-11  Ville Skytt  <scop@xemacs.org>
+2002-07-11  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el: Add --nodeps stuff.
 	(rpm-spec-nodeps): New.
@@ -163,7 +163,7 @@
 	(rpm-spec-mode-menu): Ditto.
 	(rpm-build): Handle -nodeps.
 
-2002-07-06  Ville Skytt  <scop@xemacs.org>
+2002-07-06  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el: Docstring fixes, cleanups.
 	(rpm-spec-user-full-name): New.
@@ -172,12 +172,12 @@
 	(rpm-insert-packager): Ditto.
 
 
-2002-04-20  Ville Skytt  <scop@xemacs.org>
+2002-04-20  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el: Whitespace cleanup.
 	(rpm-spec-initialize): Tweaks to initial spec file.
 
-2002-04-12  Ville Skytt  <scop@xemacs.org>
+2002-04-12  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el: Docstring updates.
 	(rpm-tags-list): Bring up to date with RPM 4.1.
@@ -187,10 +187,10 @@
 	(rpm-find-spec-version): Handle Epoch/Serial, return nil
 	unless Version was found.
 
-2002-04-09  Ville Skytt  <scop@xemacs.org>
+2002-04-09  Ville Skyttä <scop@xemacs.org>
 	* rpm-spec-mode.el.upstream: New file.
 
-2002-04-07  Ville Skytt  <scop@xemacs.org>
+2002-04-07  Ville Skyttä <scop@xemacs.org>
 
 	* rpm-spec-mode.el: New.
 	* Makefile (REQUIRES): Add sh-script, needed by rpm-spec-mode.el.
