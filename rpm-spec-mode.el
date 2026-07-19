@@ -76,6 +76,8 @@
 (require 'cc-mode)
 (require 'easymenu)
 (require 'compat)
+(eval-when-compile
+  (require 'cl-macs))
 
 (declare-function lm-version "lisp-mnt")
 (declare-function lm-maintainers "lisp-mnt")
@@ -752,7 +754,7 @@ with no args, if that value is non-nil."
       (progn
 	(setq rpm-spec-build-command "rpm")
 	(setq rpm-spec-nobuild-option "--test")))
-  
+
   (setq-local paragraph-start (concat "$\\|" page-delimiter))
   (setq-local paragraph-separate paragraph-start)
   (setq-local paragraph-ignore-fill-prefix t)
@@ -1389,30 +1391,31 @@ command."
 See `search-forward-regexp'."
   (save-excursion
     (ignore-errors
-      (let ((str
+      (let ((string
              (progn
                (goto-char (point-min))
                (search-forward-regexp
                 (concat "^" field ":[ \t]*\\(.*?\\)[ \t]*$") max)
                (match-string 1))))
-        ;; Try to expand macros
-        (if (string-match "\\(%{?\\(\\?\\)?\\)\\([a-zA-Z0-9_]*\\)\\(}?\\)" str)
-            (let ((start-string (substring str 0 (match-beginning 1)))
-                  (end-string (substring str (match-end 4))))
-              (if (progn
-                    (goto-char (point-min))
-                    (search-forward-regexp
-                     (concat "%\\(define\\|global\\)[ \t]+"
-                             (match-string 3 str)
-                             "[ \t]+\\(.*\\)") nil t))
-                  ;; Got it - replace.
-                  (concat start-string (match-string 2) end-string)
-                (if (match-string 2 str)
-                    ;; Conditionally evaluated macro - remove it.
-                    (concat start-string end-string)
-                  ;; Leave as is.
-                  str)))
-          str)))))
+        (cl-labels ((expand-macros (str)
+                      (if (string-match "\\(%{?\\(\\?\\)?\\)\\([a-zA-Z0-9_]*\\)\\(}?\\)" str)
+                          (let ((start-string (substring str 0 (match-beginning 1)))
+                                (end-string (substring str (match-end 4))))
+                            (if (progn
+                                  (goto-char (point-min))
+                                  (search-forward-regexp
+                                   (concat "%\\(define\\|global\\)[ \t]+"
+                                           (match-string 3 str)
+                                           "[ \t]+\\(.*\\)") nil t))
+                                ;; Got it - replace.
+                                (expand-macros (concat start-string (match-string 2) end-string))
+                              (if (match-string 2 str)
+                                  ;; Conditionally evaluated macro - remove it.
+                                  (concat start-string end-string)
+                                ;; Leave as is.
+                                str)))
+                        str)))
+          (expand-macros string))))))
 
 (defun rpm-find-spec-version (&optional with-epoch)
   "Get the version string.
